@@ -1,0 +1,19 @@
+
+***Depreciated - tf.feature_column.categorical_column_with_vocabulary_list
+https://www.tensorflow.org/api_docs/python/tf/feature_column/categorical_column_with_vocabulary_list
+
+Migrate tf.feature_columns to Keras preprocessing layers
+https://www.tensorflow.org/guide/migrate/migrating_feature_columns
+
+
+
+
+
+
+
+
+
+
+
+
+
