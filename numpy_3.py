@@ -48,7 +48,7 @@ arr6 = np.sin(arr)
 # #  -0.2794155   0.6569866   0.98935825  0.41211849]
 
 # log
-arr7 = np.log(arr)
+# arr7 = np.log(arr)
 # print(f"arr7: {arr7}")
 # # RuntimeWarning: divide by zero encountered in log
 # #   arr7 = np.log(arr)
@@ -56,9 +56,41 @@ arr7 = np.log(arr)
 # #  1.79175947 1.94591015 2.07944154 2.19722458]
 
 
+# sum all of the elements in the array
+# print(f"sum of arr: {arr.sum()}")
+# # sum of arr: 45
 
+# avg of arr
+# print(f"avg of arr: {arr.mean()}")
+# avg of arr: 4.5
 
+# max of arr
+# print(f"max of arr: {arr.max()}")
+# max of arr: 9
 
+# standard deviation of arr
+# print(f"standard deviation of arr: {arr.std()}")
+# standard deviation of arr: 2.8722813232690143
+
+arr_2d = np.arange(0,25).reshape(5,5)
+# print(f"arr_2d: {arr_2d}")
+# # arr_2d: [[ 0  1  2  3  4]
+# #  [ 5  6  7  8  9]
+# #  [10 11 12 13 14]
+# #  [15 16 17 18 19]
+# #  [20 21 22 23 24]]
+# print(f"sum of arr: {arr_2d.sum()}")
+# # sum of arr: 300
+
+# sum across the rows (each column top to bottom)
+row_sum = arr_2d.sum(axis=0)
+# print(f"row_sum: {row_sum}")
+# # row_sum: [50 55 60 65 70]
+
+# sum across the columns (each row left to right)
+column_sum = arr_2d.sum(axis=1)
+# print(f"column_sum: {column_sum}")
+# # column_sum: [ 10  35  60  85 110]
 
 
 
