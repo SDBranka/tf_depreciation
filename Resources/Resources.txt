@@ -5,7 +5,8 @@ https://www.tensorflow.org/api_docs/python/tf/feature_column/categorical_column_
 Migrate tf.feature_columns to Keras preprocessing layers
 https://www.tensorflow.org/guide/migrate/migrating_feature_columns
 
-
+Pandas IO documentation
+https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html
 
 
 
