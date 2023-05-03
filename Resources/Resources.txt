@@ -8,6 +8,10 @@ https://www.tensorflow.org/guide/migrate/migrating_feature_columns
 Pandas IO documentation
 https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html
 
+Data Sources:
+https://www.kaggle.com/datasets/chirin/africa-economic-banking-and-systemic-crisis-data
+
+https://www.hbs.edu/behavioral-finance-and-financial-stability/data/Pages/global.aspx
 
 
 
