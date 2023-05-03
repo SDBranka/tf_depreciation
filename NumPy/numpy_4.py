@@ -138,4 +138,3 @@ column_sum = mat.sum(axis=0)
 # column_sum: [55 60 65 70 75]
 
 
-
