@@ -93,10 +93,3 @@ column_sum = arr_2d.sum(axis=1)
 # # column_sum: [ 10  35  60  85 110]
 
 
-
-
-
-
-
-
-

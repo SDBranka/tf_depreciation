@@ -100,4 +100,3 @@ gre_than_four = arr[bool_arr]
 # # gre_than_four: [ 5  6  7  8  9 10]
 
 
-
