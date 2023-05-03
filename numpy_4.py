@@ -23,7 +23,7 @@ arr4 = np.arange(10,51)
 #  34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50]
 
 # 6 create an array of all the even integers from 10 to 50
-arr5 = np.arange(10,51,2).astype(dtype="int")
+arr5 = np.arange(10,51,2)
 # print(f"arr5: {arr5}")
 # arr5: [10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50]
 
@@ -35,7 +35,7 @@ arr6 = np.arange(0,9).reshape(3,3)
 #        [6 7 8]]
 
 # 8 create a 3x3 identity matrix
-arr7 = np.eye(3,3)
+arr7 = np.eye(3)
 # print(f"arr7: {arr7}")
 # arr7: [[1. 0. 0.]
 #        [0. 1. 0.]
