@@ -1,10 +1,5 @@
 import numpy as np 
 import pandas as pd
-# from numpy.random import randint
-
-
-# seeding random to produce the repeatable values for tutorial purposes
-np.random.seed(42)
 
 
 # Three ways to deal with missing data
@@ -115,11 +110,5 @@ fill_df = df["A"].fillna(value=0)
 # 1  2.000000  6.5  20
 # 2  2.333333  6.5  30
 # 3  4.000000  8.0  40
-
-
-
-
-
-
 
 
