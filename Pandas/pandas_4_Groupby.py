@@ -4,10 +4,6 @@ import numpy as np
 import pandas as pd
 
 
-# seeding random to produce the repeatable values for tutorial purposes
-np.random.seed(42)
-
-
 df = pd.read_csv("Data/universities.csv")
 # print(df.head())
 #                                 Sector  ... Geography
@@ -68,13 +64,5 @@ df = pd.read_csv("Data/universities.csv")
 #             50%    408.000000  308.000000
 #             75%    591.000000  501.000000
 #             max    960.000000  910.000000
-
-
-
-
-
-
-
-
 
 
