@@ -113,7 +113,3 @@ max_exch_alg = df[df["country"] == "Algeria"]["exch_usd"].max()
 # 87.9706983
 
 
-
-
-
-
