@@ -5,9 +5,10 @@
 # year - The year of the observation
 # systemic_crisis - "0" means that no systemic crisis occurred in the year and "1" means that a systemic crisis occurred in the year.
 # exch_usd - The exchange rate of the country vis-a-vis the USD
-# domestic_debt_in_default - "0" means that no sovereign domestic debt default occurred in the year and "1" means that a sovereign domestic debt default occurred in the year
-# sovereign_external_debt_default - "0" means that no sovereign external debt default occurred in the year and "1" means that a sovereign external debt default occurred in the year
-# gdp_weighted_default - The total debt in default vis-a-vis the GDP
+# domestic_debt_in_default - "0" means that no sovereign_external_debt_default domestic debt default occurred in the year and "1" means that a sovereign domestic debt default occurred in the year
+# sovereign_external_debt_default - "0" > 0ans tdefault occurred in the year and "1" means that a sovereign external debt default occurred in the year
+# gdp_weighted_default - The total debt inef
+# ault vis-a-vis the Gprint(gdp_weighted_default)DP
 # inflation_annual_cpi - The annual CPI Inflation rate
 # independence - "0" means "no independence" and "1" means "independence"
 # currency_crises - "0" means that no currency crisis occurred in the year and "1" means that a currency crisis occurred in the year
@@ -64,6 +65,15 @@ count_w_max_CPI = df["country"][df["inflation_annual_cpi"].argmax()]
 # print(count_w_max_CPI)
 # Zimbabwe
 
+# max_cpi_zim = df[df["country"] == "Zimbabwe"]["inflation_annual_cpi"].max()
+# print(max_cpi_zim)
+# 21989695.22
+max_cpi_zim = df["inflation_annual_cpi"].max()
+print(max_cpi_zim)
+
+
+# another way
+# count_w_max_CPI = df.sort_values("inflation_annual_cpi", ascending=False).head(1)["country"]
 
 # TODO:6 In what year did Kenya have its first System Crisis?
 kenya_crisis = df[(df["country"] == "Kenya") & (df["systemic_crisis"] == 1)].sort_values(by="year",ascending=True)
@@ -74,12 +84,33 @@ kenya_first_sys_crisis_year = kenya_crisis["year"].iloc[0]
 
 
 # TODO:7 How many yearly systemic crises have occurred per country?
+crisis_count = df.groupby(["year", "country"]).sum("systemic_crisis")
+crisis_count = crisis_count["systemic_crisis"]
+# print(crisis_count)
+# year  country
+# 1860  Egypt        0
+# 1861  Egypt        0
+# 1862  Egypt        0
+# 1863  Egypt        0
+# 1864  Egypt        0
+#                   ..
+# 2014  Mauritius    0
+#       Morocco      0
+#       Nigeria      1
+#       Tunisia      0
+#       Zambia       0
+# Name: systemic_crisis, Length: 1059, dtype: int64
+
 
 # TODO:8 How many years did Zimbabwe have a sovereign external debt default occur?
+zim_sedd = len(df[(df["country"] == "Zimbabwe") & (df["sovereign_external_debt_default"] > 0)])
+# print(zim_sedd)
+# 30
 
 # TODO:9 In what year did Algeria have its highest exchange rate?
-
-
+max_exch_alg = df[df["country"] == "Algeria"]["exch_usd"].max()
+# print(max_exch_alg)
+# 87.9706983
 
 
 
