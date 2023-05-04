@@ -8,10 +8,27 @@ https://www.tensorflow.org/guide/migrate/migrating_feature_columns
 Pandas IO documentation
 https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html
 
+Adding colors based on colormaps
+https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
+
+
 Data Sources:
 https://www.kaggle.com/datasets/chirin/africa-economic-banking-and-systemic-crisis-data
 
 https://www.hbs.edu/behavioral-finance-and-financial-stability/data/Pages/global.aspx
+
+
+Seaborn Datasets:
+['anagrams', 'anscombe', 'attention', 'brain_networks', 
+'car_crashes', 'diamonds', 'dots', 'dowjones', 'exercise', 
+'flights', 'fmri', 'geyser', 'glue', 'healthexp', 'iris', 
+'mpg', 'penguins', 'planets', 'seaice', 'taxis', 'tips', 
+'titanic']
+
+to pull and store them:
+print(sns.get_dataset_names())
+diamond=sns.load_dataset("diamonds", cache=True, data_home=None)
+diamond.to_csv("diamonds.csv", index=False)
 
 
 

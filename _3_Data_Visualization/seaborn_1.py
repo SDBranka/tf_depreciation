@@ -134,3 +134,11 @@ iris = pd.read_csv("Data/iris.csv")
 # plt.show()
 
 
+# # internet example
+# tips = sns.load_dataset("tips")
+# tips["alpha"] = np.where(tips.smoker == "Yes", 1.0, 0.5)
+
+# ax = sns.scatterplot(x="total_bill", y="tip",
+#                     data=tips[tips.alpha == 0.5], alpha=0.5)
+# sns.scatterplot(x="total_bill", y="tip", data=tips[tips.alpha == 1.0], 
+#                 alpha=1.0, ax=ax)
