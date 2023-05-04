@@ -134,9 +134,3 @@ iris = pd.read_csv("Data/iris.csv")
 # plt.show()
 
 
-
-
-
-
-
-
