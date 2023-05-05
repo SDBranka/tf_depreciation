@@ -291,69 +291,95 @@ import pandas as pd
 # boundaries to output values from the neuron. 
 
 # Activation Functions 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
+# Recall that inputs x have a weight w and a bias term b attached to them in 
+# the perceptron model. Clearly w implies how much weight or strength to 
+# give the incoming input. We can think of b as an offset value, making
+# x*w have to reach a certain threshold before having an effect.
+
+# For example if b = -10, then the effects of x*w won't really start to 
+# overcome the bias until their product surpasses 10. After that, then the 
+# effect is solely based on the value of w. Thus the term bias.
+
+# Next we want to set boundaries for the overall output value of x*w+b. We 
+# can state z = xw + b and then pass z through some activation function
+# to limit it's value.
+
+# A lot of research has been done into activation functions and their  
+# effectiveness. Let's explore some common activation functions. Recall
+# our simple perceptron has an f(x) (see notes_5). If we had a binary 
+# classification problem, we would want an output of either 0 or 1.
+
+# To avoid confusion, let's define the total inputs as a variable z, where
+# z = wx + b. In this context, we'll then refer to activation functions
+# as f(z). Keep in mind, you will often see these variables capitalized  
+# f(Z) or X to denote a tensor input consisting of multiple values.
+
+# The most simple networks rely on a basic step function that outputs 0 
+# or 1 (see notes_8). Regardless of the values, this always outputs
+# 0 or 1. This sort of function could be useful for classification (0 or 
+# 1 class). However this is a very "strong" function, since small changes
+# aren't reflected. There is just an immediate cut off that splits 
+# between 0 and 1.
+
+# I would be nice if we could have a more dynamic function, for example
+# the red line (see notes_9). This is the sigmoid function. Changing the 
+# activation function can be beneficial depending on the task.
+
+# This still works for classification, and will be more sensitive to small 
+# changes. Using the sigmoid function allows us to receive a probability
+# instead of just an output of 0 or 1.
+
+# Some other activation functions
+# Hyperbolic Tangent: tanh(z) (see notes_10)
+# - Outputs between -1 and 1 instead of 0 and 1
+
+# Rectified Linear Unit (ReLU): (see notes_11)
+# - This is actually a relatively simple function max(0,z)
+# - If the output of the value is less than 0, we treat it as 0. Otherwise,
+#   if it's greater than 0, we go ahead and output the actual z value 
+# - ReLU has been found to have very good performance, especially when 
+#   dealing with the issue of vanishing gradient. 
+# - We'll often default to ReLU due to it's overall good performance
+
+# For a full list of activation functions, check out 
+# https://en.wikipedia.org/wiki/Activation_function
+
+
+# Multi-Class Activation Functions 
+# Notice all these activation functions make sense for a single output,
+# either a continuous label or trying to predict a binary classification
+# (either a 0 or a 1), but what should we do if we have a multi-class 
+# situation?
+
+# There are 2 main types of multi-class situations: 
+# - Non-Exclusive Classes
+#   - A data point can have multiple classes/categories assigned to it
+#     - Photos can have multiple tags (eg beach, family, vacation, etc)
+# - Mutually Exclusive Classes
+#   - A data point can only have one class/category assigned to it
+#     - Photos can be categorized as being in grayscale or full color, but
+#       cannot be both
+#   - the more common of these two 
+
+# Organizing multiple classes 
+# The easiest way to organize multiple classes is to simply have 1 output
+# node per class. Previously we thought of the last output layer as a single 
+# node. That single noe could output a continuous regression value or binary
+# classification (0 or 1). Let's expand this output layer to work for the 
+# case of multi-classification. (see notes_12) So consider an input layer,
+# your hidden layers, and then an output layer where the output layer is 
+# essentially one neuron per class. This means we will need to organize 
+# categories for this output layer. We're not going to be able to feed
+# our neural network with a string like "red", "blue", "green", etc. Recall
+# that the neural network is going to take in x values and those should be
+# numbers so that we can apply weights to them and a biases (you can't
+# multiply a word like "cat"). We're going to need to transform our data
+# in order for it to be processed correctly by neural networks.
+
+# Instead we use one-hot encoding (dummy variables). Let's take a look
+# at what this looks like with mutually exclusive classes. So for mutually 
+# exclusive classes you have data points and a class that belongs to each
+# data point (ex see notes_13).
 # 
 # 
 # 
