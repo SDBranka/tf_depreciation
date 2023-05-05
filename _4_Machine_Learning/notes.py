@@ -142,6 +142,402 @@ import pandas as pd
 # will really depend on the specific situation.
 
 
+# Often we have a precision/recall trade off. We need to decide if the model 
+# will focus on fixing false positives vs false negatives. In disease 
+# diagnosis, it is probably better to go in the direction of false positives, 
+# so we make sure to classify as many cases of disease as possible.
+
+# All of this is to say, machine learning is not performed in a vacuum, but 
+# instead a collaborative process where we should consult with experts in the
+# domain (e.g. medical doctors)
+
+
+# Evaluating Performance
+# Regression 
+# Regression is a task when a model attempts to predict continuous values
+# (unlike categorical values, which is classification). In regression 
+# problems evaluation metrics like accuracy or recall are not useful. We 
+# need metrics designed for continuous values. For example, attempting to 
+# predict the price of a house given it's features is a regression task. 
+# Attempting to predict the country a house is in given it's features would
+# be a classification task.
+
+# The most common evaluation metrics for regression are:
+# - Mean Absolute Error
+#   - This is the mean of the absolute value of errors
+#   - The issue with MAE is that it won't punish large errors 
+# - Mean Squared Error 
+#   - This is the mean of the squared errors
+#   - Larger errors are noted more than with MAE, making MSE more popular 
+# - Root Mean Square Error
+#   - This is the root of the mean of the squared errors
+#   - Most popular
+#   - has same units as y 
+
+# Most common question is 'Is this RMSE good?' Context is everything. A 
+# RMSE of $10 is fantastice while predicting the price of a house, but 
+# horrible for predicting the price of a candy bar.
+
+# You should compar your error metric to the average value of the label in
+# your data set to try to get an intuition of it's overall performance.
+# Domain knowledge also plays an important role here.
+
+
+# Unsupervised Learning 
+# We've covered supervised learning, where the label was known due to 
+# historical labeled data, but what happens when we don't have historical
+# labels? This is unsupervised learning. There are certain tasks that fall
+# under the umbrella of unsupervised learning:
+# - Clustering
+#   - Grouping together unlabeled data points into categories/clusters
+#   - Data points are assigned to a cluster based on similarity
+#   - Keep in mind, since this is unsupervised data we may end up with an 
+#     approach that doesn't actually correspond with the labels we had in 
+#     mind
+# - Anomaly Detection
+#   - Attempts to detect outliers in a dataset
+#     - ex: fraudulent transactions on a credit card 
+# - Dimensionality Reduction
+#   - Data processing techniques that reduces the number of features in a 
+#     data set, either for compression, or to better understand the 
+#     underlying trends within a data set. 
+
+# It is important to note, these are situations where we don't have the  
+# correct answer for historical data. This means the evaluation is much 
+# harder and more nuanced.
+
+
+# Understanding Artificial Neural Networks
+# A large part of this section will focus on the theory behind many of the 
+# ideas we will implement with code. Let's do a quick review of how we will
+# gradually build an understanding of artificial neural networks.
+
+
+# Perceptron Model 
+# The whole idea behind deep learning is to have computers artificially 
+# mimic biological natural intelligence. 
+
+# A perceptron was a form of neural network introduced in 1958 by Frank 
+# Rosenblatt. Amazingly, even back then he saw huge potential:
+# "...perceptron may eventually be able to learn, make decisions, and 
+# translate languages."
+# However, in 1969 Marvin Minsky and Seymour Papert's published their book
+# Perceptrons. It suggested that there were severe limitations to what 
+# perceptrons could do. This marked the beginning of what is known as the 
+# AI Winter, with little funding into AI and Neural Networks in the 1970's.
+# Fortunately for us, we now know the amazing power of neural networks, 
+# which all stem from the simple perceptron model, so let's head back and  
+# convert our simple biological neuron model into the perceptron model
+# (see notes_4). 
+# If f(x) is just a sum, then y = x1 + x2. Realistically, we would want to 
+# be able to adjust some parameter in order to "learn". Let's add an 
+# adjustable weight we multiply against x (see notes_5). Now
+# y = x1w1 + x2w2. Now we could update the weights to effect y. Let's add
+# in a bias term b to the inputs (see notes_6). y = (x1w1 + b) + (x2w2 + b).
+# Later we will see how we can expand this model to have x be a tensor of
+# information (an n-dimensional matrix). Also we'll see we can even simplify
+# the bias to be at a layer level instead of a bias per input: y = wx + b.
+
+
+# Neural Networks 
+# A single perceptron won't be enough to learn complicated systems. 
+# Fortunately, we can expand on the idea of a single perceptron, to create
+# a multi-layer perceptron model. We'll also introduce the idea of 
+# activation functions.
+
+# To build a network of perceptrons, we can connect layers of perceptrons,  
+# using a multi-layer perceptron model. The outputs of one perceptron are
+# directly fed into as inputs to another perceptron(neuron). This allows 
+# the network as a whole to learn about interactions and relationships  
+# between features.
+
+# The first layer is the input layer. This is the layer that directly  
+# receives the data. 
+
+# The last layer is the output layer (this can be more than one neuron). 
+
+# Layers in between the input and output layers are hidden layers. Hidden
+# layers are difficult to interpret, due to their high interconnectivity 
+# and distance away from known input and output values. 
+
+# Neural networks become "deep neural networks" if they contain 2 or more
+# hidden layers (see notes_7).
+
+# Terminology: 
+#  - Input Layer:
+#    - First layer that directly accepts real data
+# - Hidden Layer:
+#   - Any layer between input and output layers
+# - Output Layer: 
+#   - The final estimate of the output.
+
+# What is incredible about the neural network framework is that it can be 
+# used to a approximate any function. Zhou Lu and later on Boris Hanin 
+# proved mathematically that neural networks can approximate any convex
+# continuous function.
+
+# For more details on this check out:  
+# Universal approximation theorem
+# https://en.wikipedia.org/wiki/Universal_approximation_theorem
+
+# Previously in our simple model we saw that the perceptron itself contained
+# a very simple summation function f(x). For most cases however that won't 
+# be useful, we'll want to be able to set constraints to our output values,
+# especially in classification tasks.
+
+# In classification tasks, it would be useful to have all outputs fall 
+# between 0 and 1. These values can then present probability assignments
+# for each class. Next we'll explore how to use activation functions to set
+# boundaries to output values from the neuron. 
+
+# Activation Functions 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+
+
+
+
+
 
 
 
