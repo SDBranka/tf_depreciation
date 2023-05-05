@@ -1,5 +1,3 @@
-import pandas as pd
-
 # Supervised learning algorithms are trained using labeled examples, such as an input
 # where the desired output is known
 
