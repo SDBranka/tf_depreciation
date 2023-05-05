@@ -6,6 +6,7 @@ import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split              # to split the data into sets
 from sklearn.preprocessing import MinMaxScaler                    # to normalize and scale the data
+from tensorflow.keras
 
 
 # Step 1: Read in your data
@@ -109,7 +110,11 @@ X_test = scaler.transform(X_test)
 # 0.0
 
 
-# Create the neural network
+# Create the model/neural network
+
+
+
+
 
 
 
