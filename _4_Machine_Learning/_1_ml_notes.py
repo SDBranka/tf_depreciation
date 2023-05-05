@@ -379,193 +379,215 @@ import pandas as pd
 # Instead we use one-hot encoding (dummy variables). Let's take a look
 # at what this looks like with mutually exclusive classes. So for mutually 
 # exclusive classes you have data points and a class that belongs to each
-# data point (ex see notes_13).
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
+# data point (ex see notes_13). Because we can't feed these string color
+# codes into our neural network we have to find another way to input the
+# values. What we can do is just use binary classification for each class
+# and what we do is end up building a matrix (see notes_14). This is one
+# hot encoding, sometimes called creating dummy variables.
+
+# For non-exclusive classes it's going to be slightly different. Recall that
+# each data point can actually have multiple classes assigned to it (see
+# notes_15). 
+
+# The term one hot encoding is in reference to the idea that 1 is on and 0 
+# is off.
+
+# Now that we've got our data correctly organized, we just need to choose 
+# the correct classification activation function that the last output
+# layer should have.
+
+# Non-exclusive 
+# - Sigmoid function
+#   - Each neuron will output a value between 0 and 1, indicating the 
+#     probability of having that class assigned to it (see notes_16)
+#     - Let's say that we set the cutoff at 0.5, in the notes_16 example
+#       the output would have two classes assigned to it (both class 1 and
+#       class 2)
+#   - Keep in mind this allows each neuron to output independent of the 
+#     other classes, allowing for a single data point fed into the function
+#     to have multiple classes assigned to it.
+
+# Mutually Exclusive Classes 
+# What do we do when each data point can only have a single class assigned
+# to it? We can use the softmax function for this (see notes_17). K is the 
+# number of categories. Softmax function calculates the probabilities 
+# distribution of the event over K different events. This function will 
+# calculate the probabilities of each target class over all possible target 
+# classes. The range will be 0 to 1, and the sum of all probabilities will 
+# be equal to 1. The model returns the probabilities of each class and the 
+# target class chosen will have the highest probability. 
+
+# The main thing to keep in mind is that if you use the softmax for
+# multi-class problems you get this sort of output:
+# [Red, Green, Blue]
+# [0.1,  0.6,   0.3]
+# The sum of all probabilities add to 1 because there is a 100% that the 
+# output belongs to one of these categories
 
 
+# Cost Functions and Gradient Descent
+# Cost functions measure how far off we are in the predictions of our
+# neural networks. Gradient Descent which is going to help us minimize 
+# that cost/error. 
+
+# We now understand that neural networks take in inputs, multiply them by 
+# weights, and add biases to them. Then this result is passed through an
+# activation function which at the end of all the layers leads to some
+# output. This output y^ is the model's estimation of what it predicts the 
+# label to be. So after the network creates it's prediction, how do we 
+# evaluate it? And after the evaluation how can we update the network's
+# weights and biases?
+
+# We need to take the estimated outputs of the network and then compare 
+# them to the real values of the label. Keep in mind this is using the 
+# training data set during the fitting/training of the model.
+
+# The cost function (often referred to as a loss function) must be an 
+# average so it can output a single value. We can keep track of our 
+# loss/cost during the training to monitor network performance.
+
+# We'll use the following variables: 
+# - y to represent the true value
+# - a to represent neuron's prediction
+# In terms of weights and bias:
+# - wx + b = z
+# Pass z into activation function o(Z) = a
+
+# One very common cost function is the quadratic cost function (see 
+# notes_18) a^L(x) is essentially the predicted output, L is 
+# essentially the output layer. We simply calculate the difference between 
+# the real values y(x) against our predicted values a(x.)
+
+# Note: The notation shown here corresponds to vector inputs and outputs 
+# since we will be dealing with a batch of training points and predictions. 
+# Notice that squaring this does 2 useful things for us, keeps everything
+# positive and punishes large errors.
+
+# We can think of the cost function as a function of 4 main things:
+# C(W, B, S^r, E^r)
+# W is our neural network's weights, B is our neural network's biases, S^r
+# is the input of a single training sample, and E^r is the desired output
+# of that training sample.
+
+# Notice how that information was all encoded in our simplified notation. 
+# The a(x) holds information about weights and biases. a(x) is z after
+# having been passed through the activation function.
+
+# This means that if we have a huge network, we can expect C (the cost 
+# function) to be quite complex, with huge vectors of weights and biases.
+# Here (see notes_19) is a small network with all it's parameters labeled.
+# That is a lot to calculate. How do we solve this? How do we calculate 
+# this cost function and figure out how to minimize it?
+
+# In a real case, this means we have some cost function C dependent on lots
+# of weights (C(w1,w2,w3,...wn)) How do we figure out which weights lead us
+# to the lowest cost? 
+
+# For simplicity, let's imagine we only had one weight in our cost function 
+# w. We want to minimize our loss/cost (overall error), which means we need
+# to figure out what value of w results in the minimum of C(w). Here (see
+# notes_20) is an example of our "simple" function C(w). What we want to 
+# do is to figure out what value of w minimizes our cost function. Students
+# of calculus know that we could just take the derivative of this function
+# and solve for 0, but realize our real cost function will be very complex
+# (see notes_21), it's going be n-dimensional, having as many dimensions as 
+# there are weights. It would take far too long to take the derivative and 
+# solve for every dimension in a real world problem. So instead we use a
+# stochatric proccess and use gradient descent to solve this problem. 
+# Let's consider again the simplified cost function (notes_21) to see how
+# this works. Let's start off with a single point on this cost function and
+# calculate the slope at this point (notes_22). Then we move downward in the  
+# direction of the slope. This process is repeated until the slope converges
+# to zero (the minimum value is discovered) (notes_23). Keep in mind that 
+# we can change the size of the steps taken in trying to obtain the minimum.
+# Smaller step sizes increase the amount of time it takes to find the 
+# minimum, but should you use steps that are too large that value may be 
+# overshot (notes_24). The step size is known as the learning rate.
+
+# The learning rate just depicted was constant, each step size was equal,  
+# but we can be clever and adapt our step size as we go along. We could
+# start with larger steps, then go smaller as we realize the slope gets 
+# closer to zero. This is known as adaptive gradient descent.
+
+# The Adam Optimizer
+# In 2015, Kingma and Ba published their paper: "Adam: A Method for 
+# Stochastic Optimization". Adam is a much more efficient way of searching
+# for these minimums, so we will apply it to our code. Adam vs other 
+# gradient descent algorithms (see notes_25) notice how it outperforms
+# all others. Realistically we're calculating this descent in an 
+# n-dimensional space for all our weights (illustrated for 3 dimensions in
+# notes_26). When dealing with these n-dimensional vectors(tensors), the 
+# notation changes from derivative to gradient(notes_27).
+
+# For classification problems, we often use the cross entropy loss function
+# The assumption is that your model predicts a probability distribution
+# p(y=i) for each class i = 1,2,...,C (notes_28).
 
 
+# Backpropagation 
+# Fundamentally, we want to know how the cost function results changes with 
+# respect to the weights in the network, so we can update the weights to
+# minimize the cost function. Let's begin with a very simple network where 
+# each layer only has 1 neuron. Each input will receive a weight and 
+# bias (notes_29). This means we have C(w1,b1,w2,b2,w3,b3). We've already
+# seen how this process propagates forward. Let's start at the end to see 
+# the backpropagation. Let's say we have L layers, then our notation
+# becomes (see notes_30). Focusing on these last two layer, let's define
+# z = wx + b. Then applying an activation function we'll state: a = o(z).
+# This means we have z^L = w^L * a^L-1 + b^L. This means that z of the
+# last layer is equal to (w of the last layer times a of the second to last
+# layer) plus b of the last layer. Also a^L = o(z^L), this means the 
+# activation output at the last layer is equal to the sigmoid(the activation
+# function) of z at the last layer. That means then that 
+# C_0(...) = (a^L - y)^2 or the cost function is equal to a^L minus y (where
+# y is the actual true output) squared. 
 
+# We want to understand how sensitive is the cost function to changes in w. 
+# This is where partial derivatives come into play. We want to find out the
+# relationship between the final cost function and weights at the layer L.
+# So we're going to say take the partial derivative using the chain rule of 
+# that cost function with respect to weights and layer L (notes_31). Recall
+# that the cost function is not just a function of the weights, but it is 
+# also of the biases. So we need to understand the relationship of the cost 
+# function to both the weights and the biases as well. We can calculate
+# the bias terms (notes_32). The main idea here is that we can use the
+# gradient to go back through the network and adjust our weights and biases
+# to minimize the output of the error vector on the last output layer.
+# Using some calculus notation, we can expand this idea to networks with 
+# multiple neurons per layer. Hadamard Product (notes_33) element by element
+# product.
 
+# Given this notation and backpropagation, we have a few main steps to 
+# training neural networks. 
+# Step 1: Using input x set the activation function a for the input layer
+# (z = wx + b and a = o(z)). This resulting a then feeds into the next 
+# layer and so on.
+# Step 2: For each layer, compute:
+# - z^L = (w^L * a^L-1) + b 
+# - a^L = o(z^L)
+# Step 3: Compute the error vector (notes_34)
+# - the first term (gradient_a C) expresses the rate of change of C with  
+#   respect to the output activations 
+# - essentially this error vector translates to the rate of change of C 
+#   equals the activation function of the last layer minus the actual 
+#   output (a^L - y) (notes_35) so replacing the first term we 
+#   get (notes_36)
+# - Now let's write out our error term for a layer in terms of error of 
+#   the next layer (since we're moving backwards)     
+# Step 4: Backpropagate the error.
+# - For each layer we compute (note the lower case l denoting that this is
+#   dealing with layers that are not the output layer (L))
+#   - (notes_37)
+#     - (w^(l+1))^T is the transpose of the weight of matrix of l+1 layer
+# - This is the generalized error for any layer l
+# - When we apply the transpose weight matrix we can think intuitively
+#   of this as moving the error backwards through the network, giving us
+#   some sort of measure of the error at the output of the lth layer
+# - We then take the Hadamard product (notes_38). This moves the error
+#   backwards through the activation function in layer l, giving us the error
+#   in l in the weighted input to layer l.
 
-
+# The gradient of the cost function is given by (notes_39). This then allows
+# us to adjust the weights and biases to help minimize that cost function
 
 
