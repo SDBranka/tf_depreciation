@@ -14,6 +14,10 @@ https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
 How to Save and Reuse Data Preparation Objects in Scikit-Learn
 https://machinelearningmastery.com/how-to-save-and-load-models-and-data-preparation-in-scikit-learn-for-later-use/
 
+Correllation (pandas) between date and integer? timeseries
+https://stackoverflow.com/questions/48242555/correllation-pandas-between-date-and-integer-timeseries
+
+
 
 
 
@@ -21,7 +25,8 @@ https://machinelearningmastery.com/how-to-save-and-load-models-and-data-preparat
 Data Science in VS Code tutorial
 https://code.visualstudio.com/docs/datascience/data-science-tutorial
 
-
+pandas.get_dummies
+https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html
 
 
 
