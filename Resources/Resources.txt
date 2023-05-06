@@ -12,7 +12,21 @@ Adding colors based on colormaps
 https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
 
 
-Data Sources:
+
+
+
+
+----------   Look at later   ----------
+Data Science in VS Code tutorial
+https://code.visualstudio.com/docs/datascience/data-science-tutorial
+
+
+
+
+
+
+
+---------   Data Sources   ---------
 https://www.kaggle.com/datasets/chirin/africa-economic-banking-and-systemic-crisis-data
 
 https://www.hbs.edu/behavioral-finance-and-financial-stability/data/Pages/global.aspx

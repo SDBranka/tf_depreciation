@@ -21,15 +21,27 @@ import pandas
 # on top of each other through simple calls
 
 
-# Keras Syntax Basics 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
+# Choosing an optimizer and loss 
+# keep in mind what type of problem you are trying to solve
+# as many optimizers can be used for any case, the thing to note in these
+# examples is the loss function selected for each problem type
+# for a multi-class classification problem
+model.compile(optimizer="rmsprop",
+            loss="categorical_crossentropy",
+            metrics=["accuracy"]
+            )
+
+# for a binary classification problem 
+model.compile(optimize="rmsprop",
+            loss="binary_crossentropy",
+            metrics=["accuracy"]
+            )
+
+# for a mean squared error regression problem  
+model.compile(optimizer="rmsprop",
+            loss="mse"
+            )
+
 # 
 # 
 # 

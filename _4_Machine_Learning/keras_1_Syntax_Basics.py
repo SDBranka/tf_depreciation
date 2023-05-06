@@ -1,12 +1,15 @@
 # build a model that predicts what price an item should be 
 # sold at based upon feature1 and feature2
 
-import pandas as pd
+
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 from sklearn.model_selection import train_test_split              # to split the data into sets
 from sklearn.preprocessing import MinMaxScaler                    # to normalize and scale the data
-from tensorflow.keras
+from tensorflow.keras.models import Sequential                    # used to build the model
+from tensorflow.keras.layers import Dense                         # used to build the model
 
 
 # Step 1: Read in your data
@@ -73,7 +76,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,
 
 # get information about MinMaxScaler - prints to console
 # help(MinMaxScaler)
-# see /Resources/MinMaxScaler_help_output.txt for console output
+# see /Resources/Help_Outputs/MinMaxScaler_help_output.txt for console output
 
 # create an instance of the scaler
 scaler = MinMaxScaler()
@@ -110,13 +113,111 @@ X_test = scaler.transform(X_test)
 # 0.0
 
 
+# help(Sequential)
+# see /Resources/Help_Outputs/Sequential_help.txt
+# help(Dense)
+# see /Resources/Help_Outputs/Dense_help.txt
+
 # Create the model/neural network
 
+# # one way to do this
+# # call sequential and pass in a list of the layers you want
+# # a Dense layer is a normal feed forward network where every neuron is
+# # connected to every other neuron in the next layer
+# # units is the number of neurons the layer will have, activation is the 
+# # activation function that will be used
+# # so 4 input neurons, 2 hidden layer neurons, 1 output neuron
+# model = Sequential([Dense(units=4, activation="relu"), 
+#                     Dense(units=2, activation="relu"),
+#                     Dense(units=1)
+#                     ])
+
+# our preferred way to do this
+# build model with 3 layers of 4 neurons each with an output layer of 
+# one neuron. Output layer is built this way because we only want to produce
+# a single predicted sales price
+model = Sequential()
+model.add(Dense(4,activation="relu"))
+model.add(Dense(4,activation="relu"))
+model.add(Dense(4,activation="relu"))
+
+model.add(Dense(1))
+
+# compile the model
+# this is a linear regression problem so we will use mean squared error
+# as the loss function
+model.compile(optimizer="rmsprop", loss="mse")
 
 
+# train/fit the model to the training data
+# x is the features we are training the model on
+# y is the label we intend to predict from the training set
+# epochs is the number of times we will pass the data through the network
+# verbose is used to determine if the training process will be shown in the
+# console output, if you include this parameter and set it to 0, the 
+# training data will not output to the console
+model.fit(x=X_train, y=y_train, epochs=250)
 
 
+# take a look at the training history
+# shows the loss of each epoch as a dictionary of a list of all the 
+# loss values
+# print(model.history.history)
+# {'loss': [256630.625, 256538.3125, 256447.109375, 256350.359375, 256247.640625, 256139.359375, 256025.4843
+# 75, 255903.15625, 255772.4375, 255633.28125, 255484.234375, 255326.421875, 255157.375, 254977.171875, 2547
+# 87.15625, 254584.453125, 254369.484375, 254141.09375, 253899.046875, 253641.78125, 253372.234375, 253086.9
+# 21875, 252785.625, 252468.140625, 252134.609375, 251782.875, 251414.15625, 251024.75, 250618.1875, 250190.
+# 515625, 249740.890625, 249272.703125, 248782.40625, 248268.34375, 247733.46875, 247172.390625, 246587.3593
+# 75, 245979.796875, 245345.078125, 244681.890625, 243990.78125, 243277.046875, 242530.5625, 241756.609375,
+# 240948.640625, 240117.546875, 239253.6875, 238356.828125, 237422.53125, 236457.21875, 235465.390625, 23443
+# 4.65625, 233367.078125, 232262.90625, 231117.421875, 229944.34375, 228732.3125, 227474.53125, 226188.29687
+# 5, 224852.609375, 223480.28125, 222070.375, 220614.5625, 219122.3125, 217579.25, 216000.4375, 214377.84375
+# , 212707.21875, 210991.453125, 209246.109375, 207440.109375, 205597.8125, 203714.828125, 201775.0, 199789.
+# 8125, 197756.484375, 195680.359375, 193561.171875, 191397.171875, 189182.0625, 186922.390625, 184605.42187
+# 5, 182252.65625, 179847.46875, 177387.046875, 174907.046875, 172361.578125, 169776.90625, 167154.375, 1644
+# 78.640625, 161758.0625, 158991.53125, 156191.484375, 153346.140625, 150463.03125, 147533.890625, 144560.03
+# 125, 141540.1875, 138502.5625, 135429.796875, 132303.84375, 129151.2578125, 125982.8671875, 122783.234375,
+#  119546.921875, 116306.265625, 113026.171875, 109710.078125, 106386.3671875, 103033.09375, 99664.4765625,
+# 96309.2109375, 92935.8203125, 89557.296875, 86178.1953125, 82780.5859375, 79394.875, 76025.4453125, 72663.
+# 6953125, 69308.9765625, 65964.328125, 62659.25, 59389.71484375, 56142.83984375, 52933.3671875, 49762.01562
+# 5, 46628.3984375, 43560.15234375, 40541.98828125, 37591.71875, 34699.328125, 31893.869140625, 29191.697265
+# 625, 26536.0078125, 23991.685546875, 21546.076171875, 19196.943359375, 16985.75390625, 14881.681640625, 12
+# 927.5380859375, 11103.20703125, 9420.4833984375, 7894.24560546875, 6523.81005859375, 5326.33984375, 4307.2
+# 998046875, 3469.801513671875, 2824.153076171875, 2347.34619140625, 2049.598876953125, 1908.7803955078125,
+# 1857.5028076171875, 1835.057861328125, 1818.4478759765625, 1799.7109375, 1783.423095703125, 1769.533691406
+# 25, 1752.6314697265625, 1737.2330322265625, 1720.856201171875, 1705.016845703125, 1687.255859375, 1670.777
+# 7099609375, 1654.938720703125, 1638.8707275390625, 1621.099609375, 1603.39013671875, 1586.8873291015625, 1
+# 571.850341796875, 1555.4425048828125, 1536.839111328125, 1518.900390625, 1502.4090576171875, 1486.41503906
+# 25, 1471.78466796875, 1455.6522216796875, 1437.6514892578125, 1419.6844482421875, 1402.901611328125, 1388.
+# 1171875, 1371.81201171875, 1357.525390625, 1342.21240234375, 1326.4078369140625, 1312.2811279296875, 1294.
+# 5091552734375, 1277.98828125, 1263.5076904296875, 1246.3568115234375, 1229.251953125, 1212.315673828125, 1
+# 196.6519775390625, 1180.7537841796875, 1168.8951416015625, 1155.569091796875, 1140.6552734375, 1124.960449
+# 21875, 1109.5386962890625, 1095.1634521484375, 1080.0111083984375, 1066.467041015625, 1051.597900390625, 1
+# 036.1190185546875, 1022.0908203125, 1005.7154541015625, 993.2252807617188, 977.6715087890625, 962.37152099
+# 60938, 949.4417114257812, 933.5592041015625, 919.76953125, 907.3487548828125, 891.8981323242188, 876.91796
+# 875, 865.7172241210938, 851.9208984375, 837.4083862304688, 822.3204345703125, 807.1279296875, 792.46704101
+# 5625, 780.0341796875, 767.7009887695312, 754.1807250976562, 743.4107666015625, 730.1913452148438, 717.8844
+# 604492188, 704.9631958007812, 691.4811401367188, 680.100341796875, 668.493408203125, 657.0263671875, 644.8
+# 218994140625, 632.9769287109375, 620.1166381835938, 607.2181396484375, 594.8644409179688, 585.415161132812
+# 5, 572.0447387695312, 559.69921875, 547.468994140625, 536.5372924804688, 525.968017578125, 514.80743408203
+# 12, 504.1950988769531, 492.21588134765625, 482.5263977050781, 472.5870056152344, 462.22412109375, 450.6370
+# 2392578125, 442.775390625]}
 
+# so we can turn this into a dataframe
+# loss_df = pd.DataFrame(model.history.history)
+# print(loss_df.head())
+#             loss
+# 0  256647.718750
+# 1  256515.312500
+# 2  256368.578125
+# 3  256199.062500
+# 4  256008.390625
+
+# chart1
+# so we are able to plot this out on a graph
+# loss_df.plot()
+# plt.title("Chart 1")
+# plt.show()
 
 
 
