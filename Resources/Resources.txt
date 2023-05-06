@@ -11,7 +11,8 @@ https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html
 Adding colors based on colormaps
 https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
 
-
+How to Save and Reuse Data Preparation Objects in Scikit-Learn
+https://machinelearningmastery.com/how-to-save-and-load-models-and-data-preparation-in-scikit-learn-for-later-use/
 
 
 
@@ -30,6 +31,8 @@ https://code.visualstudio.com/docs/datascience/data-science-tutorial
 https://www.kaggle.com/datasets/chirin/africa-economic-banking-and-systemic-crisis-data
 
 https://www.hbs.edu/behavioral-finance-and-financial-stability/data/Pages/global.aspx
+
+https://www.kaggle.com/harlfoxem/housesalesprediction
 
 
 Seaborn Datasets:
