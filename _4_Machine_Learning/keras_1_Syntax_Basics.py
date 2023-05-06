@@ -6,10 +6,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from pickle import dump                                           # to save the scaler           
 from sklearn.model_selection import train_test_split              # to split the data into sets
 from sklearn.preprocessing import MinMaxScaler                    # to normalize and scale the data
+from sklearn.metrics import mean_absolute_error, mean_squared_error   # for grabbing further metrics about the model's performance
 from tensorflow.keras.models import Sequential                    # used to build the model
 from tensorflow.keras.layers import Dense                         # used to build the model
+from tensorflow.keras.models import load_model                    # to save and load trained models
 
 
 # Step 1: Read in your data
@@ -220,15 +223,173 @@ model.fit(x=X_train, y=y_train, epochs=250)
 # plt.show()
 
 
+# evaluate the model's performance
+# one way to do this is with .evaluate(). to do this we pass in our test
+# set (verbose set to 0 to eliminate console output) this returns back the 
+# model's metric "loss" for the test set of data, based on the loss function
+# selected earlier (in this case "mse" or mean squared error)
+print(model.evaluate(X_test, y_test, verbose=0))
+# 25.034265518188477
+
+# we can also test the loss on the training set
+print(model.evaluate(X_train, y_train, verbose=0))
+# 23.747806549072266
+
+# get our actual true predictions
+test_predictions = model.predict(X_test)
+# so here is a list of prices based off our X_test set
+# print(test_predictions)
+# [[408.61255]
+#  [621.2526 ]
+#  [590.2641 ]
+# ...
+#  [607.52954]
+#  [419.1815 ]
+#  [414.70398]]
+
+# test the predictions
+# let's bring these together with the true values from the test set and 
+# then plot them out and compare them to each other
+# turn the test predictions into a pandas series and reshape to 300 bc 
+# just so that it matches the dimensions that a pandas Series call expects
+#  since the test data has 300 values (set up earlier in the app) now we 
+# have the same predictions as a pandas series instead of a numpy array
+test_predictions = pd.Series(test_predictions.reshape(300,))
+
+# create a dataframe that is the true value of y
+pred_df = pd.DataFrame(y_test, columns=["True Test Y"])
+# print(pred_df)
+#      True Test Y
+# 0     402.296319
+# 1     624.156198
+# 2     582.455066
+# 3     578.588606
+# 4     371.224104
+# ..           ...
+# 295   525.704657
+# 296   502.909473
+# 297   612.727910
+# 298   417.569725
+# 299   410.538250
+
+# [300 rows x 1 columns]
+
+# concat the predicted value df with the actual value df
+# axis set to 1 to add the df as a new column
+pred_df = pd.concat([pred_df, test_predictions], axis=1)
+# print(pred_df)
+#      True Test Y           0
+# 0     402.296319  405.191376
+# 1     624.156198  623.482483
+# 2     582.455066  592.065186
+# 3     578.588606  572.167603
+# 4     371.224104  366.526459
+# ..           ...         ...
+# 295   525.704657  528.976929
+# 296   502.909473  515.279297
+# 297   612.727910  609.590149
+# 298   417.569725  416.851593
+# 299   410.538250  410.784454
+
+# [300 rows x 2 columns]
+
+# correct the names of the columns
+pred_df.columns = ["Test True Y", "Model Predictions"]
+# print(pred_df)
+#      Test True Y  Model Predictions
+# 0     402.296319         406.739960
+# 1     624.156198         625.411743
+# 2     582.455066         593.913391
+# 3     578.588606         574.066833
+# 4     371.224104         368.121735
+# ..           ...                ...
+# 295   525.704657         530.792297
+# 296   502.909473         517.205994
+# 297   612.727910         611.482178
+# 298   417.569725         418.366913
+# 299   410.538250         412.386475
+
+# [300 rows x 2 columns]
+
+# chart2
+# create a scatter plot to visually represent the predictions vs the actual
+# values
+# sns.scatterplot(x="Test True Y",y="Model Predictions",data=pred_df)
+# plt.title("Chart 2")
+# plt.show()
+# that this shows such a tightly packed line we can tell the model is 
+# performing well
+
+# grab metrics to show this information quantatively through the various
+# regression methods
+# if we want the mean_absolute_error then we just need to compare 
+# y_test (true values of y) to the predicted values for y
+# since we already have these organized in a dataframe we can call it like
+mae = mean_absolute_error(pred_df["Test True Y"], 
+                        pred_df["Model Predictions"]
+                        )
+# print(mae)
+# 3.997765644868322
+# This means we're about $4 off with the prediction from the actual price 
+# point. Looking at metrics from the original data
+# print(df.describe())
+#              price     feature1     feature2
+# count  1000.000000  1000.000000  1000.000000
+# mean    498.673029  1000.014171   999.979847
+# std      93.785431     0.974018     0.948330
+# min     223.346793   997.058347   996.995651
+# 25%     433.025732   999.332068   999.316106
+# 50%     502.382117  1000.009915  1000.002243
+# 75%     564.921588  1000.637580  1000.645380
+# max     774.407854  1003.207934  1002.666308
+# bc the average price is about $498 the model is performing with a better 
+# than 1% error
+
+# in this case it will be the same as the loss bc we used mse as the loss
+# function
+mse = mean_squared_error(pred_df["Test True Y"],
+                        pred_df["Model Predictions"]
+                        )
+# print(mse)
+# 25.802020835580425
+
+# root mean squared error
+# just take the square root of mean squared error
+rmse = mean_squared_error(pred_df["Test True Y"],
+                        pred_df["Model Predictions"]
+                        )**0.5
+# print(rmse)
+# 5.105797469961507
 
 
+# predicting on brand new data
+# we pick a new gem out of the ground and want to see what we should price 
+# it at
+new_gem = [[998,1000]]
 
+# the model is trained on scaled features, so we must scale the new data
+new_gem = scaler.transform(new_gem)
+print(new_gem)
+# [[0.14117652 0.53968792]]
 
+# make the prediction
+prediction = model.predict(new_gem)
+print(prediction)
+# [[418.62036]]
+# The model predicts this gem to be priced at around $418.62036 based on
+# it's features
 
+# the way you evaluate your test set is essentially the same as you'd 
+# evaluate new data
 
+# saving the model
+# save the mode as a .h5 file
+model.save('my_gem_model.h5')
+# save the scaler
+dump(scaler,open("scaler.pkl","wb"))
 
-
-
+# # to load a model
+# later_model = load_model("my_gem_model.h5")
 
 
 
