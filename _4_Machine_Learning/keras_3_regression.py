@@ -33,7 +33,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-df = pd.read_csv("Data/kc_house_data1.csv")
+df = pd.read_csv("Data/kc_house_data.csv")
+# df = pd.read_csv("Data/kc_house_data1.csv")
 
 
 # explore the data
@@ -118,33 +119,163 @@ stats_df = df.describe().transpose()
 
 # comparing your label to other points that you think may have a high
 # correlation
-print(df.corr())
+# 1 means perfect correlation, -1 means perfectly inversely correlated, the
+# closer to 0 the value the lower the correlation
+# print(df.corr())
+# ValueError: could not convert string to float: '20141013T000000'
+# I have found a work around for this, but in the interest of this course
+# I will not apply it here
+
+# sort the columns correlation to price from -1 to 1
+# print(df.corr()["price"].sort_values())
+# ValueError: could not convert string to float: '20141013T000000'
+# from course see output below:
+# zipcode          -0.053402
+# id               -0.016772
+# long              0.022036
+# condition         0.036056
+# yr_built          0.053953
+# sqft_lot15        0.082845
+# sqft_lot          0.089876
+# yr_renovated      0.126424
+# floors            0.256804
+# waterfront        0.266398
+# lat               0.306692
+# bedrooms          0.308787
+# sqft_basement     0.323799
+# view              0.397370
+# bathrooms         0.525906
+# sqft_living15     0.585241
+# sqft_above        0.605368
+# grade             0.667951
+# sqft_living       0.701917
+# price             1.000000
+# Name: price, dtype: float64
+
+# note that price, unsurprisingly has a 1:1 correlation, the next most 
+# directly correlated is sqft_living
 
 
+# explore features highly correlated to the label with a scatterplot
+# chart3
+# sns.scatterplot(x="price", y="sqft_living", data=df)
+# plt.title("Chart 3")
+# plt.show()
+
+# chart4
+# the distribution of prices per bedrooms
+# sns.boxplot(x="bedrooms", y="price", data=df)
+# plt.title("Chart 4")
+# plt.show()
+
+# distribution of prices per latitude vs longitude
+# chart5
+# first let's just look at the relationship to longitude
+# sns.scatterplot(x="price", y="long", data=df)
+# plt.title("Chart 5")
+# plt.show()
+# looks like longitude -122.2 is an expensive area
+
+# chart6
+# next with latitude
+# sns.scatterplot(x="price", y="lat", data=df)
+# plt.title("Chart 6")
+# plt.show()
+# here latitude 47.65-ish is the most expensive area
+
+# it's not to difficult then to assume there is some sort of pricing
+# hot spot where these two meet
+# chart7
+# make the chart larger to better see data
+# plt.figure(figsize=(12,8))
+# sns.scatterplot(x="long", y="lat", data=df)
+# plt.title("Chart 7")
+# plt.show()
+# it's interesting how closely this plot lines up with a geographic map
+# of the county
+
+# let's attempt to hone in on this expensive area
+# # chart8
+# plt.figure(figsize=(12,8))
+# sns.scatterplot(x="long", y="lat", data=df, hue="price")
+# plt.title("Chart 8")
+# plt.show()
 
 
+# let's clean up some of the price data outliers 
+# let's look at the 20 most expensive houses
+twenty_most_expensive = df.sort_values("price", ascending=False).head(20)
+# print(twenty_most_expensive)
+#                id             date      price  bedrooms  ...      lat     long  sqft_living15  sqft_lot15
+# 7252   6762700020  20141013T000000  7700000.0         6  ...  47.6298 -122.323           3940        8800
+# 3914   9808700762  20140611T000000  7062500.0         5  ...  47.6500 -122.214           3930       25449
+# 9254   9208900037  20140919T000000  6885000.0         6  ...  47.6305 -122.240           4540       42730
+# 4411   2470100110  20140804T000000  5570000.0         5  ...  47.6289 -122.233           3560       24345
+# 1448   8907500070  20150413T000000  5350000.0         5  ...  47.6232 -122.220           4600       21750
+# 1315   7558700030  20150413T000000  5300000.0         6  ...  47.5631 -122.210           4320       24619
+# 1164   1247600105  20141020T000000  5110800.0         5  ...  47.6767 -122.211           3430       26788
+# 8092   1924059029  20140617T000000  4668000.0         5  ...  47.5570 -122.210           3270       10454
+# 2626   7738500731  20140815T000000  4500000.0         5  ...  47.7493 -122.280           3030       23408
+# 8638   3835500195  20140618T000000  4489000.0         4  ...  47.6208 -122.219           3720       14592
+# 12370  6065300370  20150506T000000  4208000.0         5  ...  47.5692 -122.189           4740       19329
+# 4149   6447300265  20141014T000000  4000000.0         4  ...  47.6151 -122.224           3140       15996
+# 2085   8106100105  20141114T000000  3850000.0         4  ...  47.5850 -122.222           4620       22748
+# 19017  2303900100  20140911T000000  3800000.0         3  ...  47.7296 -122.370           3430       45302
+# 7035    853200010  20140701T000000  3800000.0         5  ...  47.6229 -122.220           5070       20570
+# 16302  7397300170  20140530T000000  3710000.0         4  ...  47.6395 -122.234           2980       19602
+# 6508   4217402115  20150421T000000  3650000.0         6  ...  47.6515 -122.277           3510       15810
+# 18482  4389201095  20150511T000000  3650000.0         5  ...  47.6146 -122.213           4190       11275
+# 15255  2425049063  20140911T000000  3640900.0         4  ...  47.6409 -122.241           3820       25582
+# 19148  3625049042  20141011T000000  3635000.0         5  ...  47.6165 -122.236           2910       17600
+
+# [20 rows x 21 columns]
+
+# the most expensive house is $ 7,700,000.00, taking a look at the price 
+# distribution chart (chart1) and the above data, it looks like the market
+# drops off dramatically around $3,000,000
+
+# to drop the expensive outliers
+# print(len(df))
+# 21613
+# so there are 21,613 houses in our data set
+# if we wanted to drop the top 1%
+one_percent =  len(df) * 0.01
+# build a df missing the top 1%
+non_top_1_perc_df = df.sort_values("price", ascending=False).iloc[int(one_percent):]
+
+# let's recheck the scatterplot
+# chart9
+# plt.figure(figsize=(12,8))
+# sns.scatterplot(x="long", y="lat", data=non_top_1_perc_df, hue="price")
+# plt.title("Chart 9")
+# plt.show()
+# now the distribution is a bit more clear
+# let's get rid of the white edgecolor
+# chart10
+# plt.figure(figsize=(12,8))
+# sns.scatterplot(x="long", y="lat", data=non_top_1_perc_df, hue="price", edgecolor=None)
+# plt.title("Chart 10")
+# plt.show()
+# because we have so many colors stack on top of each other, we'll adjust the alpha
+# we'll also adjust the color gradient
+# chart11
+# plt.figure(figsize=(12,8))
+# sns.scatterplot(x="long", y="lat", data=non_top_1_perc_df, 
+#                 edgecolor=None, alpha=0.2,
+#                 # red/yellow/green gradient
+#                 palette="RdYlGn", hue="price"
+#                 )
+# plt.title("Chart 11")
+# plt.show()
+# now this is a much better plot of where the most expensive homes in 
+# king county are
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# use a boxplot to see if the home is on the waterfront (using orig df)
+# chart12
+sns.boxplot(x="waterfront", y="price", data=df)
+plt.title("Chart 12")
+plt.show()
 
 
 

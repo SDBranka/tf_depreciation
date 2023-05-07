@@ -17,6 +17,14 @@ https://machinelearningmastery.com/how-to-save-and-load-models-and-data-preparat
 Correllation (pandas) between date and integer? timeseries
 https://stackoverflow.com/questions/48242555/correllation-pandas-between-date-and-integer-timeseries
 
+Pandas - Data Correlations
+https://www.w3schools.com/python/pandas/pandas_correlations.asp
+
+
+
+
+
+
 
 
 
@@ -28,8 +36,8 @@ https://code.visualstudio.com/docs/datascience/data-science-tutorial
 pandas.get_dummies
 https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html
 
-
-
+How to Fix in Pandas: could not convert string to float
+https://www.statology.org/pandas-could-not-convert-string-to-float/
 
 
 ---------   Data Sources   ---------
