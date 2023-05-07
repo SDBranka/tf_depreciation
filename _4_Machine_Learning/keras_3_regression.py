@@ -273,9 +273,208 @@ non_top_1_perc_df = df.sort_values("price", ascending=False).iloc[int(one_percen
 
 # use a boxplot to see if the home is on the waterfront (using orig df)
 # chart12
-sns.boxplot(x="waterfront", y="price", data=df)
-plt.title("Chart 12")
-plt.show()
+# sns.boxplot(x="waterfront", y="price", data=df)
+# plt.title("Chart 12")
+# plt.show()
+
+
+
+# let's take another look at the dataframe
+# print(df.head())
+#            id             date     price  bedrooms  ...      lat     long  sqft_living15  sqft_lot15
+# 0  7129300520  20141013T000000  221900.0         3  ...  47.5112 -122.257           1340        5650
+# 1  6414100192  20141209T000000  538000.0         3  ...  47.7210 -122.319           1690        7639
+# 2  5631500400  20150225T000000  180000.0         2  ...  47.7379 -122.233           2720        8062
+# 3  2487200875  20141209T000000  604000.0         4  ...  47.5208 -122.393           1360        5000
+# 4  1954400510  20150218T000000  510000.0         3  ...  47.6168 -122.045           1800        7503
+
+# [5 rows x 21 columns]
+
+# since the id has no relation to the price of the house, let's get rid 
+# of the id column (axis=1 to remove a column as opposed to a row)
+df = df.drop("id", axis=1)
+# print(df.head())
+#               date     price  bedrooms  bathrooms  ...      lat     long  sqft_living15  sqft_lot15
+# 0  20141013T000000  221900.0         3       1.00  ...  47.5112 -122.257           1340        5650
+# 1  20141209T000000  538000.0         3       2.25  ...  47.7210 -122.319           1690        7639
+# 2  20150225T000000  180000.0         2       1.00  ...  47.7379 -122.233           2720        8062
+# 3  20141209T000000  604000.0         4       3.00  ...  47.5208 -122.393           1360        5000
+# 4  20150218T000000  510000.0         3       2.00  ...  47.6168 -122.045           1800        7503
+
+# [5 rows x 20 columns]
+
+# convert the date column into a form we can work with, a datetime object
+# now we can perform feature engineering on it
+df["date"] = pd.to_datetime(df["date"])
+# print(df.head())
+#         date     price  bedrooms  bathrooms  ...      lat     long  sqft_living15  sqft_lot15
+# 0 2014-10-13  221900.0         3       1.00  ...  47.5112 -122.257           1340        5650
+# 1 2014-12-09  538000.0         3       2.25  ...  47.7210 -122.319           1690        7639
+# 2 2015-02-25  180000.0         2       1.00  ...  47.7379 -122.233           2720        8062
+# 3 2014-12-09  604000.0         4       3.00  ...  47.5208 -122.393           1360        5000
+# 4 2015-02-18  510000.0         3       2.00  ...  47.6168 -122.045           1800        7503
+
+# [5 rows x 20 columns]
+
+# to show it's a datetime object
+# print(df["date"].head())
+# 0   2014-10-13
+# 1   2014-12-09
+# 2   2015-02-25
+# 3   2014-12-09
+# 4   2015-02-18
+# Name: date, dtype: datetime64[ns]
+
+# let's grab the year from these objects and create a new column
+df["year"] = df["date"].apply(lambda date: date.year)
+# create a month column
+df["month"] = df["date"].apply(lambda date: date.month)
+
+# print(df.head())
+#         date     price  bedrooms  bathrooms  sqft_living  ...     long  sqft_living15  sqft_lot15  year  mo
+# nth
+# 0 2014-10-13  221900.0         3       1.00         1180  ... -122.257           1340        5650  2014
+#  10
+# 1 2014-12-09  538000.0         3       2.25         2570  ... -122.319           1690        7639  2014
+#  12
+# 2 2015-02-25  180000.0         2       1.00          770  ... -122.233           2720        8062  2015
+#   2
+# 3 2014-12-09  604000.0         4       3.00         1960  ... -122.393           1360        5000  2014
+#  12
+# 4 2015-02-18  510000.0         3       2.00         1680  ... -122.045           1800        7503  2015
+#   2
+
+# [5 rows x 22 columns]
+
+
+# now we can explore if/how the year and month effect the price of these houses
+# look at the distribution by month
+# chart13
+# sns.boxplot(x="month", y="price", data=df)
+# plt.title("Chart 13")
+# plt.show()
+
+# it's hard to see from this plot whether there are any significant 
+# distribution differences between the months the homes are sold by
+# so let's look at the numbers
+# look at the average home sale price by month
+avg_price_by_month = df.groupby("month").mean()["price"]
+# print(avg_price_by_month)
+# 1     525870.889571
+# 2     507851.371200
+# 3     543977.187200
+# 4     561837.774989
+# 5     550768.785833
+# 6     558002.199541
+# 7     544788.764360
+# 8     536445.276804
+# 9     529253.821871
+# 10    539026.971778
+# 11    521961.009213
+# 12    524461.866757
+# Name: price, dtype: float64
+
+# we can look at this on a graph
+# chart14
+# avg_price_by_month.plot()
+# plt.title("Chart 14")
+# plt.show()
+
+# explore by year
+avg_price_by_year = df.groupby("year").mean()["price"]
+
+# chart15
+# avg_price_by_year.plot()
+# plt.title("Chart 15")
+# plt.show()
+# this graph indicates that the home prices increase every year
+
+# because we don't plan to use the day in this case and we have extracted the
+# month and year to their own columns let's drop the original date column
+df = df.drop("date", axis=1)
+# look at the remaining columns
+# print(df.columns)
+# Index(['price', 'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors',
+#        'waterfront', 'view', 'condition', 'grade', 'sqft_above',
+#        'sqft_basement', 'yr_built', 'yr_renovated', 'zipcode', 'lat', 'long',
+#        'sqft_living15', 'sqft_lot15', 'year', 'month'],
+#       dtype='object')
+
+
+# let's take at zipcode
+# because it is written as a number, the program will treat these as numerical 
+# values rather than categorical ones (ie 98174 is greater than 90828) if
+# we just feed them in as is
+
+# to see if we need to adjust this let's explore the zipcode column
+# see the distribution of sales across zipcodes
+# print(df["zipcode"].value_counts())
+# zipcode
+# 98103    602
+# 98038    590
+# 98115    583
+# 98052    574
+# 98117    553
+#         ...
+# 98102    105
+# 98010    100
+# 98024     81
+# 98148     57
+# 98039     50
+# Name: count, Length: 70, dtype: int64
+# this shows us that there are 70 different zipcodes included in the dataset
+# because there are so many, for this case we will just drop the zipcode
+# column. In a more realistic situations other options would include 
+# grouping these into smaller sets (a group of 10(otl) neighboring zipcodes;
+# North, East, South, West areas of the county; etc). This is where domain 
+# knowledge (understanding of the topic) comes into play
+df = df.drop("zipcode", axis=1)
+
+# another feature that may cause an issue in this case is yr_renovated so 
+# so let's explore that
+# print(df["yr_renovated"].value_counts())
+# yr_renovated
+# 0       20699
+# 2014       91
+# 2013       37
+# 2003       36
+# 2005       35
+#         ...
+# 1951        1
+# 1959        1
+# 1948        1
+# 1954        1
+# 1944        1
+# Name: count, Length: 70, dtype: int64
+# it appears that the more recently a house was renovated, the more likely 
+# it was sold. 0 indicates that the home has not been renovated. It may
+# be more useful to split this column into renovated vs not renovated 
+# In this case we will leave it as is
+
+
+# let's look at sqft_basement
+# print(df["sqft_basement"].value_counts())
+# sqft_basement
+# 0      13126
+# 600      221
+# 700      218
+# 500      214
+# 800      206
+#        ...
+# 518        1
+# 374        1
+# 784        1
+# 906        1
+# 248        1
+# Name: count, Length: 306, dtype: int64
+# 0 most likely indicates that the home does not have a basement
+
+
+
+
+
+
+
 
 
 
