@@ -543,6 +543,40 @@ model.fit(x=x_train, y=y_train,
             )
 
 
+# explore the loss of the model
+# print(model.history.history)
+# {'loss': [423614709760.0, 421438554112.0, 390851166208.0, 259568812032.0, 117141323776.0, 98445320192.0, 96
+# 635953152.0, 94575419392.0,...,28792750080.0, 28633341952.0, 28587573248.0]}
+
+model_loss = pd.DataFrame(model.history.history)
+# print(f"model loss:\n{model_loss}")
+# model loss:
+#              loss      val_loss
+# 0    4.236147e+11  4.329362e+11
+# 1    4.214386e+11  4.251953e+11
+# 2    3.908512e+11  3.545699e+11
+# 3    2.595688e+11  1.710353e+11
+# 4    1.171413e+11  1.049156e+11
+# ..            ...           ...
+# 395  2.900679e+10  2.869180e+10
+# 396  2.903407e+10  2.861174e+10
+# 397  2.899140e+10  2.879275e+10
+# 398  2.898579e+10  2.863334e+10
+# 399  2.895261e+10  2.858757e+10
+
+# [400 rows x 2 columns]
+
+# chart16
+# plot the losses
+model_loss.plot()
+plt.title("Chart 16")
+plt.show()
+# you can see from this chart that the model fit really well. Had the 
+# validation set curve split from the training set in a positive slope
+# it'd be a pretty good indicator of the model being overfit.
+
+
+
 # saving the model
 # save the model as a .h5 file
 model.save("_4_Machine_Learning/keras_3/kc_house_model.h5")
@@ -550,4 +584,10 @@ model.save("_4_Machine_Learning/keras_3/kc_house_model.h5")
 # save the scaler
 dump(scaler,open("_4_Machine_Learning/keras_3/kc_house_scaler.pkl","wb"))
 
-
+# save the dataframe and data sets
+# x_train, x_test, y_train, y_test
+dump(df,open("_4_Machine_Learning/keras_3/kc_house_df.pkl","wb"))
+dump(x_train,open("_4_Machine_Learning/keras_3/kc_house_x_train.pkl","wb"))
+dump(x_test,open("_4_Machine_Learning/keras_3/kc_house_x_test.pkl","wb"))
+dump(y_train,open("_4_Machine_Learning/keras_3/kc_house_y_train.pkl","wb"))
+dump(y_test,open("_4_Machine_Learning/keras_3/kc_house_y_test.pkl","wb"))
