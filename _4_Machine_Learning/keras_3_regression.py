@@ -31,6 +31,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split               # to split the data into sets 
+from sklearn.preprocessing import MinMaxScaler                     # to scale data
+from tensorflow.keras.models import Sequential                     # to build the model
+from tensorflow.keras.layers import Dense                          # to build the model
 
 
 df = pd.read_csv("Data/kc_house_data.csv")
@@ -468,6 +472,99 @@ df = df.drop("zipcode", axis=1)
 # 248        1
 # Name: count, Length: 306, dtype: int64
 # 0 most likely indicates that the home does not have a basement
+
+
+
+# after we've finished all the feature engineering, the next step 
+# is to separate the features from the label
+
+# establish the label
+# use .values so that returns/stores the series as a numpy array
+# begin a df of just the features by dropping the label from the orig
+x = df.drop("price", axis=1).values
+y = df["price"].values
+
+# split the data into training/testing sets
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.3,
+                                                    random_state=101
+                                                    )
+
+# once the data is split we scale the data (remember we only do this on the 
+# training set to prevent data leakage)
+
+# create an instance of the scaler
+scaler = MinMaxScaler()
+# redefine the training data as a scaled version of the training data
+# in this example we will fit and transform in one step as opposed to 2
+# as in keras_1
+x_train = scaler.fit_transform(x_train)
+# scale the test data (remember not to fit this set to prevent data leakage)
+x_test = scaler.transform(x_test)
+
+
+# create the model
+model = Sequential()
+# typically we try to base the number of neurons in our layers on the size
+# of the actual feature data
+# so let's take a look at the shape of the data
+# print(x_train.shape)
+# (15129, 19)
+# this shows we have 19 incoming features, so that's a good indicator
+# that we should have 19 neurons in our input layer
+model.add(Dense(19, activation="relu"))
+# adding multiple hidden layers to make this a deep learning network
+model.add(Dense(19, activation="relu"))
+model.add(Dense(19, activation="relu"))
+model.add(Dense(19, activation="relu"))
+# adding too many may cause overfitting, but we can explore if that is
+# happening later by feeding in validation data along with our training
+# create the final output layer (1 neuron bc we only want 1 output value)
+model.add(Dense(1))
+# compile the model using the adam optimizer, since this is a regression 
+# problem we're chosing a continuous(not categorical) label(price) for the 
+# loss metric select we will select mean squared error 
+model.compile(optimizer="adam",loss="mse")
+# train the model
+# for this case we will also use a validation data set to ensure that we are 
+# not overfitting the model. after each epoch of the training data we'll 
+# quickly run the test data and run the loss on the test data. This keeps a
+# tracking of how well the model performs on data that is not from the training
+# set. keras will not update the model (weight/biases) based on the results 
+# of the validation data
+# because the data set is so large we will also pass it in in batches
+# it is most common to do batch sizes that are an even number
+# the smaller the batch size the longer the training is going to take, but the
+# less likely you are to overfit your data
+model.fit(x=x_train, y=y_train, 
+            validation_data=(x_test, y_test),
+            batch_size = 128,
+            epochs = 400
+            )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
