@@ -383,7 +383,7 @@ print(prediction)
 # evaluate new data
 
 # saving the model
-# save the mode as a .h5 file
+# save the model as a .h5 file
 model.save('my_gem_model.h5')
 # save the scaler
 dump(scaler,open("scaler.pkl","wb"))

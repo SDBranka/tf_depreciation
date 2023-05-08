@@ -29,6 +29,7 @@
 
 import numpy as np
 import pandas as pd
+from pickle import dump                                           # to save the scaler           
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split               # to split the data into sets 
@@ -542,37 +543,11 @@ model.fit(x=x_train, y=y_train,
             )
 
 
+# saving the model
+# save the model as a .h5 file
+model.save("_4_Machine_Learning/keras_3/kc_house_model.h5")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# save the scaler
+dump(scaler,open("_4_Machine_Learning/keras_3/kc_house_scaler.pkl","wb"))
 
 
